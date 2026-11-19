@@ -1,23 +1,112 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
-<link rel="stylesheet" href="./style.css">
+<title>Cover Art Studio — GTA-style poster maker</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">★</span>
+    <div>
+      <h1>COVER ART STUDIO</h1>
+      <p>Turn your photo into a GTA-style poster. Photo in, caption on, export — done.</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <button id="exportBtn" class="btn btn-primary">⬇ Export PNG</button>
+  </div>
+</header>
+
+<main class="layout">
+  <section class="stage-wrap">
+    <div class="stage-toolbar">
+      <span id="stageHint">Click a panel to select it, then drag the photo to move it.</span>
+      <span id="selectedLabel" class="selected-label">Panel 1 selected</span>
+    </div>
+    <div class="stage">
+      <canvas id="preview" width="960" height="540"></canvas>
+    </div>
+    <p class="hint">Your photos never leave this page — everything is drawn locally in your browser.</p>
   </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
+
+  <aside class="controls">
+    <section class="card">
+      <h2>1 · Layout</h2>
+      <div class="btn-row" id="layoutRow" role="group" aria-label="Poster layout">
+        <button class="chip" data-layout="hero-duo">Hero + duo</button>
+        <button class="chip" data-layout="grid">Grid 2×2</button>
+        <button class="chip" data-layout="trio">Wide + two</button>
+      </div>
+      <p class="mini">Hero + duo: one big panel, two small. Grid: four equal panels. Wide + two: one wide top panel, two below.</p>
+    </section>
+
+    <section class="card">
+      <h2>2 · Photos</h2>
+      <div class="btn-row" id="panelRow" aria-label="Choose panel"></div>
+      <div class="photo-actions">
+        <button id="sampleA" class="btn">☀ Sample: Sunset Blvd</button>
+        <button id="sampleB" class="btn">🌙 Sample: Neon Pier</button>
+        <button id="uploadBtn" class="btn">📁 Upload a photo…</button>
+        <input type="file" id="fileInput" accept="image/*" hidden>
+      </div>
+      <label class="slider-label">Zoom <span id="zoomVal">1.00×</span></label>
+      <input type="range" id="zoom" min="1" max="3" step="0.01" value="1">
+      <div class="btn-row">
+        <button id="fitBtn" class="btn btn-small">Reset position</button>
+        <button id="allBtn" class="btn btn-small">Use this photo in every panel</button>
+      </div>
+      <p class="mini">Tip: drag the photo inside the preview to reposition it. The sample scenes are drawn by the app itself.</p>
+    </section>
+
+    <section class="card">
+      <h2>3 · Caption</h2>
+      <label class="field-label" for="captionText">Caption text</label>
+      <input type="text" id="captionText" maxlength="28" value="VICE CITY" autocomplete="off">
+      <label class="slider-label">Text size <span id="sizeVal">96</span></label>
+      <input type="range" id="captionSize" min="48" max="180" step="2" value="96">
+      <div class="btn-row" id="posRow" role="group" aria-label="Caption position">
+        <button class="chip" data-pos="bottom">Bottom</button>
+        <button class="chip" data-pos="top">Top</button>
+      </div>
+      <label class="field-label" for="captionColor">Lettering colour</label>
+      <select id="captionColor">
+        <option value="#ffffff">White</option>
+        <option value="#ffe14d">Sunset yellow</option>
+        <option value="#ff5ea8">Hot pink</option>
+        <option value="#37f4ff">Neon cyan</option>
+      </select>
+    </section>
+
+    <section class="card">
+      <h2>4 · Colour grade</h2>
+      <div class="btn-row" id="gradeRow" role="group" aria-label="Colour grade">
+        <button class="chip" data-grade="sunset">Vice City Sunset</button>
+        <button class="chip" data-grade="neon">Neon Nights</button>
+        <button class="chip" data-grade="clean">Clean</button>
+      </div>
+      <p class="mini">Sunset: orange, pink and purple. Neon: cyan and magenta on dark. Clean: no grade.</p>
+    </section>
+
+    <section class="card">
+      <h2>5 · Export</h2>
+      <div class="btn-row" id="sizeRow" role="group" aria-label="Export size">
+        <button class="chip" data-size="1080x1080">1080 × 1080</button>
+        <button class="chip" data-size="1080x1350">1080 × 1350</button>
+        <button class="chip" data-size="1920x1080">1920 × 1080</button>
+      </div>
+      <button id="exportBtn2" class="btn btn-primary btn-wide">⬇ Export PNG</button>
+      <p class="mini">Exported at full resolution — crisp, not screen-sized. <span id="exportStatus"></span></p>
+    </section>
+  </aside>
 </main>
-<script type="module" src="./src/main.js"></script>
+
+<footer class="foot">
+  <p>Cover Art Studio — a fan-made poster tool. Not affiliated with Rockstar Games. No Rockstar artwork, logos or fonts are used here; the sample scenes are original illustrations drawn by this app.</p>
+</footer>
+
+<script src="app.js"></script>
 </body>
 </html>
